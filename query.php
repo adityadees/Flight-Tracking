@@ -1,5 +1,5 @@
 <?php
-
+/*https://flightxml.flightaware.com/json/FlightXML3/GetFlightTrack?ident=N198HF-1565953527-dlad-6664977&include_position_estimates=true*/
 if (!$_GET['ident']) {
 	echo json_encode(array('error' => 'Missing ident in request'));
 	return;
@@ -18,6 +18,7 @@ header('Content-Type: application/json');
 $response = executeCurlRequest('FlightInfoStatus', $queryParams);
 if ($response) {
 	$flightArray = json_decode($response, true);
+
 	foreach ($flightArray['FlightInfoStatusResult']['flights'] as $flight) {
 		if ($flight['actual_departure_time']['epoch'] > 0 && $flight['route']) {
 			$result['ident'] = $flight['ident'];
@@ -28,6 +29,7 @@ if ($response) {
 			$result['destination_name'] = $flight['destination']['airport_name'];
 			$result['date'] = $flight['filed_departure_time']['date'];
 			$result['waypoints'] = getFlightRoute($flight['faFlightID']);
+			$result['trackflight'] = getTrackFlight($flight['faFlightID']);
 			echo json_encode($result);
 			return;
 		}
@@ -47,6 +49,30 @@ function getFlightRoute($faFlightID) {
 	}
 	return "";
 }
+
+function getTrackFlight($faFlightID) {
+	$result = [];
+	if ($response = executeCurlRequest('GetFlightTrack', array('ident' => $faFlightID))) {
+		$flightPoints = json_decode($response, true);
+/*		foreach ($flightPoints['FlightTrackResult']['data'] as $point) {
+			array_push($result, [
+				'altitude' => $point['altitude'], 
+				'altitude_change' => $point['altitude_change'],
+				'altitude_feet' => $point['altitude_feet'], 
+				'altitude_status' => $point['altitude_status'],
+				'groundspeed' => $point['groundspeed'], 
+				'heading' => $point['heading'],
+				'latitude' => $point['latitude'], 
+				'longitude' => $point['longitude'],
+				'timestamp' => $point['timestamp'], 
+				'update_type' => $point['update_type'],
+			]);
+		}*/
+		return $flightPoints;
+	}
+	return "";
+}
+
 
 function executeCurlRequest($endpoint, $queryParams) {
 
