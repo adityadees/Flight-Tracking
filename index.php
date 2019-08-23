@@ -4,37 +4,78 @@
 	<meta charset="utf-8">
 	<meta name="author" content="your name here">
 	<title>Flight</title>
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" crossorigin="anonymous">
-</head>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="#">Flight Indent</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
+	<!-- 
 
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<form onsubmit="return false;" class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"  name="ident" id="ident_text" value="GLF4">
-			<button class="btn btn-outline-success my-2 my-sm-0" id="go_button" name="go" type="submit">Search</button>
-		</form>
-	</div>
-</nav>
+		<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" crossorigin="anonymous"> -->
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" >
+		<link href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css" >
+	</head>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Flight Indent</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-<body>
-	<div class="content">
-		<div class="jumbotron p-2 p-md-5">
-			<div class="row">
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<form onsubmit="return false;" class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"  name="ident" id="ident_text" value="GLF4">
+				<button class="btn btn-outline-success my-2 my-sm-0" id="go_button" name="go" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
 
-				<div class="col-md-6 px-0">
-					<div id="results"></div>
-					<div id="map_div" style="height: 400px;width: auto;background: red"></div>
+	<body>
+		<div class="content">
+			<div class="jumbotron p-2 p-md-5">
+				<div class="row">
+
+					<div class="col-md-6 px-0">
+						<div id="results"></div>
+						<div id="map_div" style="height: 400px;width: auto;border: 1px solid"></div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="card flex-md-row mb-4 shadow-sm h-md-250">
+							<div class="card-body flex-column align-items-start">
+								<strong class="d-inline-block mb-2 text-primary">Info Status</strong>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div id="hasiljson">
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-md-12">
+										<table class="table table-striped table-bordered dtabel">
+											<thead>
+												<tr>
+													<th>No</th>
+													<th>Latitude</th>
+													<th>Longitude</th>
+												</tr>
+											</thead>
+											<tbody id="tway">
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
 				</div>
+			</div>
 
-				<div class="col-md-6">
+			<div class="row mb-2">
+				<div class="col-md-12">
 					<div class="card flex-md-row mb-4 shadow-sm h-md-250">
 						<div class="card-body flex-column align-items-start">
-							<strong class="d-inline-block mb-2 text-primary">Info Status</strong>
+							<strong class="d-inline-block mb-2 text-success">Info Track Flight</strong>
 
 							<div class="row">
 								<div class="col-md-12">
@@ -49,11 +90,19 @@
 										<thead>
 											<tr>
 												<th>No</th>
+												<th>Altitude</th>
+												<th>Altitude Change</th>
+												<th>Altitude Feet</th>
+												<th>Altitude Status</th>
+												<th>Ground Speed</th>
+												<th>Heading</th>
 												<th>Latitude</th>
 												<th>Longitude</th>
+												<th>Timestamp</th>
+												<th>Update Type</th>
 											</tr>
 										</thead>
-										<tbody id="tway">
+										<tbody id="ttrack">
 										</tbody>
 									</table>
 
@@ -64,63 +113,40 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 
-		<div class="row mb-2">
-			<div class="col-md-12">
-				<div class="card flex-md-row mb-4 shadow-sm h-md-250">
-					<div class="card-body flex-column align-items-start">
-						<strong class="d-inline-block mb-2 text-success">Info Track Flight</strong>
+	</body>
 
-						<div class="row">
-							<div class="col-md-12">
-								<div id="hasiljson">
-								</div>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-md-12">
-								<table class="table table-hovered dtabel">
-									<thead>
-										<tr>
-											<th>No</th>
-											<th>Altitude</th>
-											<th>Altitude Change</th>
-											<th>Altitude Feet</th>
-											<th>Altitude Status</th>
-											<th>Ground Speed</th>
-											<th>Heading</th>
-											<th>Latitude</th>
-											<th>Longitude</th>
-											<th>Timestamp</th>
-											<th>Update Type</th>
-										</tr>
-									</thead>
-									<tbody id="ttrack">
-									</tbody>
-								</table>
-
-							</div>
-						</div>
-
-
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-</body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> 
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> 
+
+
+<!-- https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js
+https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js
+https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js -->
+
+
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('.dtabel').DataTable();
+		$('.dtabel').DataTable(
+		{
+			dom: 'Bfrtip',
+			buttons: [
+			'copyHtml5',
+			'excelHtml5',
+			]
+		} 
+		);
 
 		$('#go_button').click(function() {
 			$.ajax({
