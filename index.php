@@ -159,7 +159,11 @@ https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js -->
 						alert('Failed to decode route: ' + response.error);
 						return;
 					}
-					var trackres = response.trackflight.GetFlightTrackResult;
+					if(response.trackflight !== null){
+						var trackres = response.trackflight.GetFlightTrackResult;
+					} else {
+						var trackres = [];
+					}
 
 					$('#hasiljson').html(
 
@@ -220,30 +224,29 @@ https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js -->
 						$('#tway').append(xhtml);
 					});
 
-
-
-					$("#ttrack").html("");
-					var nid = 0;
-					$.each(trackres.tracks, function (i,cb) {
-						nid++;
-						var xhtml = '';
-						xhtml+=`
-						<tr>
-						<td>`+nid+`</td>
-						<td>`+cb.altitude+`</td>
-						<td>`+cb.altitude_change+`</td>
-						<td>`+cb.altitude_feet+`</td>
-						<td>`+cb.altitude_status+`</td>
-						<td>`+cb.groundspeed+`</td>
-						<td>`+cb.heading+`</td>
-						<td>`+cb.latitude+`</td>
-						<td>`+cb.longitude+`</td>
-						<td>`+cb.timestamp+`</td>
-						<td>`+cb.update_type+`</td>
-						</tr>`;
-						$('#ttrack').append(xhtml);
-					});
-
+					if(response.trackflight !== null){
+						$("#ttrack").html("");
+						var nid = 0;
+						$.each(trackres.tracks, function (i,cb) {
+							nid++;
+							var xhtml = '';
+							xhtml+=`
+							<tr>
+							<td>`+nid+`</td>
+							<td>`+cb.altitude+`</td>
+							<td>`+cb.altitude_change+`</td>
+							<td>`+cb.altitude_feet+`</td>
+							<td>`+cb.altitude_status+`</td>
+							<td>`+cb.groundspeed+`</td>
+							<td>`+cb.heading+`</td>
+							<td>`+cb.latitude+`</td>
+							<td>`+cb.longitude+`</td>
+							<td>`+cb.timestamp+`</td>
+							<td>`+cb.update_type+`</td>
+							</tr>`;
+							$('#ttrack').append(xhtml);
+						});
+					}
 
 
 
